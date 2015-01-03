@@ -9,18 +9,136 @@ html(lang="en" class="no-js")
     meta(name="mobile-web-app-capable" content="yes")
     meta(name="apple-mobile-web-app-capable" content="yes")
     meta(name="apple-mobile-web-app-status-bar-style" content="black")
+    link(href='http://fonts.googleapis.com/css?family=Lilita+One|Lato:300,400,700' rel='stylesheet')
+    link(href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css' rel='stylesheet')
 
     // build:css(./) css/figtree.css
     // endbuild
 
     // build:css css/figtree-app.css
+    style.
+      body {
+        font-family: 'Lato', sans-serif;
+        font-weight: 300;
+        font-size: 18px;
+        color: #362;
+        padding-bottom: 20px;
+      }
+
+      textarea {
+        border: none !important;
+        background: #D5E1B4 !important;
+        border-bottom: 2px solid #bec9a1 !important;
+        font-size: 14px !important;
+        color: #484F40 !important;
+      }
+
+      .note {
+        color: #a41211;
+      }
+
+      .highlight {
+        background-color: #f7f7f9;
+        border: 1px solid #e1e1e8;
+        border-radius: 4px;
+      }
     // endbuild
 
   body
 
+    .container
+      .row
+        .col-xs-12
+          h1 figtree - Export fig.yml to Diagram Graph.
+          h3.note NOTE! Currently can not edit.
+      .row
+        .col-xs-6
+          h2 fig.yml
+          textarea.form-control#fig(rows='15')
+            |db:
+            |  image: postgres
+            |  ports:
+            |    - "5432"
+            |web:
+            |  build: .
+            |  command: bundle exec rackup -p 3000
+            |  volumes:
+            |    - .:/myapp
+            |  ports:
+            |    - "3000:3000"
+            |  links:
+            |  - db
+            |gitlab:
+            |  image: sameersbn/gitlab:latest
+            |  links:
+            |   - mysql:mysql
+            |   - redis:redisio
+            |  environment:
+            |   - GITLAB_PORT=10080
+            |   - GITLAB_SSH_PORT=10022
+            |  ports:
+            |   - "10022:22"
+            |   - "10080:80"
+            |  volumes:
+            |   - /opt/docker_data/gitlab:/home/git/data
+
+            |redis:
+            |  image: sameersbn/redis:latest
+            |  volumes:
+            |   - /opt/docker_data/redis:/var/lib/redis
+
+            |mysql:
+            |  image: sameersbn/mysql:latest
+            |  environment:
+            |   - DB_NAME=gitlabhq_production
+            |   - DB_USER=gitlab
+            |   - DB_PASS=password
+            |  volumes:
+            |   - /opt/docker_data/mysql:/var/lib/mysql
+
+        .col-xs-6
+          h2 json
+          textarea.form-control#yml-json(rows='15')
+
+      .row
+        .col-xs-12
+          h2 Diagram Graph
+          #diagram.highlight
+            .mermaid
+        .col-xs-12
+          h2 Mermaid Graph
+          textarea#mermaid.form-control(rows='15')
+
     // build:js(./) js/figtree.js
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.0.2/js-yaml.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/mermaid/0.3.0/mermaid.full.min.js')
     // endbuild
 
     // build:js js/figtree-app.js
+    script.
+      var doc = jsyaml.load(document.getElementById('fig').value);
+      document.getElementById('yml-json').value = JSON.stringify(doc, null, 2);
+
+      var mermaidContent = 'graph LR;\n';
+
+      var allLinks = [];
+      for (var k in doc) {
+        mermaidContent += '  ' + k + '[' + k + '];\n';
+        mermaidContent += '  ' + 'style ' + k + ' fill:#484F40;\n';
+        var links = doc[k].links;
+        if (links && links.length) {
+          for (var i = 0, l = links.length; i < l; i++) {
+            var alias = links[i].split(':');
+            allLinks.push([k, alias[0]]);
+          }
+        }
+      }
+
+      for (var i = 0, l = allLinks.length; i < l; ++i) {
+        mermaidContent += '  ' + allLinks[i][0] + '-->' + allLinks[i][1] + ';\n';
+      }
+      document.getElementById('mermaid').value = mermaidContent;
+      document.querySelector('.mermaid').innerHTML = mermaidContent;
+      mermaid.init();
     // endbuild
 

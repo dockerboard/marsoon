@@ -7,7 +7,7 @@ var jade = require('gulp-jade');
 gulp.task('default', function () {
   return gulp.src('src/**/*.jade')
     .pipe(jade({
-      pretty: true
+      //pretty: true
     }))
     .pipe(gulp.dest('dist/'));
 });
