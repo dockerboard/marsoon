@@ -68,33 +68,6 @@ html(lang="en" class="no-js")
             |    - "3000:3000"
             |  links:
             |  - db
-            |gitlab:
-            |  image: sameersbn/gitlab:latest
-            |  links:
-            |   - mysql:mysql
-            |   - redis:redisio
-            |  environment:
-            |   - GITLAB_PORT=10080
-            |   - GITLAB_SSH_PORT=10022
-            |  ports:
-            |   - "10022:22"
-            |   - "10080:80"
-            |  volumes:
-            |   - /opt/docker_data/gitlab:/home/git/data
-
-            |redis:
-            |  image: sameersbn/redis:latest
-            |  volumes:
-            |   - /opt/docker_data/redis:/var/lib/redis
-
-            |mysql:
-            |  image: sameersbn/mysql:latest
-            |  environment:
-            |   - DB_NAME=gitlabhq_production
-            |   - DB_USER=gitlab
-            |   - DB_PASS=password
-            |  volumes:
-            |   - /opt/docker_data/mysql:/var/lib/mysql
 
         .col-xs-6
           h2 json
