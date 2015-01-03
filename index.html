@@ -34,32 +34,7 @@ web:
  ports:
    - "3000:3000"
  links:
- - db
-gitlab:
- image: sameersbn/gitlab:latest
- links:
-  - mysql:mysql
-  - redis:redisio
- environment:
-  - GITLAB_PORT=10080
-  - GITLAB_SSH_PORT=10022
- ports:
-  - "10022:22"
-  - "10080:80"
- volumes:
-  - /opt/docker_data/gitlab:/home/git/data
-redis:
- image: sameersbn/redis:latest
- volumes:
-  - /opt/docker_data/redis:/var/lib/redis
-mysql:
- image: sameersbn/mysql:latest
- environment:
-  - DB_NAME=gitlabhq_production
-  - DB_USER=gitlab
-  - DB_PASS=password
- volumes:
-  - /opt/docker_data/mysql:/var/lib/mysql</textarea></div><div class="col-xs-6"><h2>json</h2><textarea id="yml-json" rows="15" class="form-control"></textarea></div></div><div class="row"><div class="col-xs-12"><h2>Diagram Graph</h2><div id="diagram" class="highlight"><div class="mermaid"></div></div></div><div class="col-xs-12"><h2>Mermaid Graph</h2><textarea id="mermaid" rows="15" class="form-control"></textarea></div></div></div><!-- build:js(./) js/figtree.js--><script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.0.2/js-yaml.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/0.3.0/mermaid.full.min.js"></script><!-- endbuild--><!-- build:js js/figtree-app.js--><script>var doc = jsyaml.load(document.getElementById('fig').value);
+ - db</textarea></div><div class="col-xs-6"><h2>json</h2><textarea id="yml-json" rows="15" class="form-control"></textarea></div></div><div class="row"><div class="col-xs-12"><h2>Diagram Graph</h2><div id="diagram" class="highlight"><div class="mermaid"></div></div></div><div class="col-xs-12"><h2>Mermaid Graph</h2><textarea id="mermaid" rows="15" class="form-control"></textarea></div></div></div><!-- build:js(./) js/figtree.js--><script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.0.2/js-yaml.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/0.3.0/mermaid.full.min.js"></script><!-- endbuild--><!-- build:js js/figtree-app.js--><script>var doc = jsyaml.load(document.getElementById('fig').value);
 document.getElementById('yml-json').value = JSON.stringify(doc, null, 2);
 
 var mermaidContent = 'graph LR;\n';
