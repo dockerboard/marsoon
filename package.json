@@ -6,19 +6,21 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/fundon/figtree"
-  },
+  "repository": "fundon/figtree",
   "keywords": [
     "fig",
     "docker",
-    "figtree"
+    "diagram",
+    "graph",
+    "figtree",
+    "d3",
   ],
   "author": "fundon cfddream@gmail.com",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/fundon/figtree/issues"
-  },
-  "homepage": "https://github.com/fundon/figtree"
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-gh-pages": "^0.4.0",
+    "gulp-jade": "^0.10.0"
+  }
 }
