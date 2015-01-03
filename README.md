@@ -3,6 +3,8 @@
 
 Export fig.yml to Diagram Graph.
 
+**This feature will be merged into [Dockerboard][]**
+
 ### Quick Start
 
 
@@ -63,3 +65,5 @@ graph LR;
   style web fill:#484F40;
   web-->db;
 ```
+
+[Dockerboard]: https://github.com/dockerboard
