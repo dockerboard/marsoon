@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en" class="no-js"><head><meta charset="utf-8"><title>figtree | Export fig.yml to Diagram Graph.</title><meta name="description" content="Export fig.yml to Diagram Graph."><meta name="keywords" content="fig, figtree, docker, dockers, diagram, graph"><meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link href="http://fonts.googleapis.com/css?family=Lilita+One|Lato:300,400,700" rel="stylesheet"><link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet"><!-- build:css(./) css/figtree.css--><!-- endbuild--><!-- build:css css/figtree-app.css--><style>body {
+<!DOCTYPE html><html lang="en" class="no-js"><head><meta charset="utf-8"><title>marsoon | Export fig.yml to Diagram Graph. No just only fig.yml.</title><meta name="description" content="Export fig.yml to Diagram Graph."><meta name="keywords" content="fig, marsoon, docker, dockers, diagram, graph"><meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link href="http://fonts.googleapis.com/css?family=Lilita+One|Lato:300,400,700" rel="stylesheet"><link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet"><!-- build:css(./) css/marsoon.css--><!-- endbuild--><!-- build:css css/marsoon-app.css--><style>body {
   font-family: 'Lato', sans-serif;
   font-weight: 300;
   font-size: 18px;
@@ -22,7 +22,7 @@ textarea {
   background-color: #f7f7f9;
   border: 1px solid #e1e1e8;
   border-radius: 4px;
-}</style><!-- endbuild--></head><body><div class="container"><div class="row"><div class="col-xs-12"><h1>figtree - Export fig.yml to Diagram Graph.</h1><h3 class="note">NOTE! Currently can not edit.</h3></div></div><div class="row"><div class="col-xs-6"><h2>fig.yml</h2><textarea id="fig" rows="15" class="form-control">db:
+}</style><!-- endbuild--></head><body><div class="container"><div class="row"><div class="col-xs-12"><h1>marsoon - Export fig.yml to Diagram Graph. No just only fig.yml.</h1><h3 class="note">NOTE! Currently can not edit.</h3></div></div><div class="row"><div class="col-xs-6"><h2>fig.yml</h2><textarea id="fig" rows="15" class="form-control">db:
  image: postgres
  ports:
    - "5432"
@@ -34,7 +34,7 @@ web:
  ports:
    - "3000:3000"
  links:
- - db</textarea></div><div class="col-xs-6"><h2>json</h2><textarea id="yml-json" rows="15" class="form-control"></textarea></div></div><div class="row"><div class="col-xs-12"><h2>Diagram Graph</h2><div id="diagram" class="highlight"><div class="mermaid"></div></div></div><div class="col-xs-12"><h2>Mermaid Graph</h2><textarea id="mermaid" rows="15" class="form-control"></textarea></div></div></div><!-- build:js(./) js/figtree.js--><script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.0.2/js-yaml.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/0.3.0/mermaid.full.min.js"></script><!-- endbuild--><!-- build:js js/figtree-app.js--><script>var doc = jsyaml.load(document.getElementById('fig').value);
+ - db</textarea></div><div class="col-xs-6"><h2>json</h2><textarea id="yml-json" rows="15" class="form-control"></textarea></div></div><div class="row"><div class="col-xs-12"><h2>Diagram Graph</h2><div id="diagram" class="highlight"><div class="mermaid"></div></div></div><div class="col-xs-12"><h2>Mermaid Graph</h2><textarea id="mermaid" rows="15" class="form-control"></textarea></div></div></div><!-- build:js(./) js/marsoon.js--><script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.0.2/js-yaml.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/0.3.0/mermaid.full.min.js"></script><!-- endbuild--><!-- build:js js/marsoon-app.js--><script>var doc = jsyaml.load(document.getElementById('fig').value);
 document.getElementById('yml-json').value = JSON.stringify(doc, null, 2);
 
 var mermaidContent = 'graph LR;\n';
