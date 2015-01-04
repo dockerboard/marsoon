@@ -52,7 +52,7 @@ web:
 
 #### Diagram Graph
 
-![Diagram Graph Web-db](https://raw.githubusercontent.com/fundon/figtree/master/screenshots/web-db.png)
+![Diagram Graph Web-db](https://raw.githubusercontent.com/dockerboard/marsoon/master/screenshots/web-db.png)
 
 
 #### Mermaid Graph

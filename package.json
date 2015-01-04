@@ -1,18 +1,18 @@
 {
-  "name": "figtree",
+  "name": "marsoon",
   "version": "0.0.0",
-  "description": "Export fig.yml to Diagram Graph.",
+  "description": "Export fig.yml to Diagram Graph. No just only fig.yml",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": "fundon/figtree",
+  "repository": "dockerboard/marsoon",
   "keywords": [
     "fig",
     "docker",
     "diagram",
     "graph",
-    "figtree",
+    "marsoon",
     "d3",
   ],
   "author": "fundon cfddream@gmail.com",

@@ -2,9 +2,9 @@ doctype html
 html(lang="en" class="no-js")
   head
     meta(charset='utf-8')
-    title figtree | Export fig.yml to Diagram Graph.
+    title marsoon | Export fig.yml to Diagram Graph. No just only fig.yml.
     meta(name="description" content="Export fig.yml to Diagram Graph.")
-    meta(name="keywords" content="fig, figtree, docker, dockers, diagram, graph")
+    meta(name="keywords" content="fig, marsoon, docker, dockers, diagram, graph")
     meta(name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no")
     meta(name="mobile-web-app-capable" content="yes")
     meta(name="apple-mobile-web-app-capable" content="yes")
@@ -12,10 +12,10 @@ html(lang="en" class="no-js")
     link(href='http://fonts.googleapis.com/css?family=Lilita+One|Lato:300,400,700' rel='stylesheet')
     link(href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css' rel='stylesheet')
 
-    // build:css(./) css/figtree.css
+    // build:css(./) css/marsoon.css
     // endbuild
 
-    // build:css css/figtree-app.css
+    // build:css css/marsoon-app.css
     style.
       body {
         font-family: 'Lato', sans-serif;
@@ -49,7 +49,7 @@ html(lang="en" class="no-js")
     .container
       .row
         .col-xs-12
-          h1 figtree - Export fig.yml to Diagram Graph.
+          h1 marsoon - Export fig.yml to Diagram Graph. No just only fig.yml.
           h3.note NOTE! Currently can not edit.
       .row
         .col-xs-6
@@ -82,12 +82,12 @@ html(lang="en" class="no-js")
           h2 Mermaid Graph
           textarea#mermaid.form-control(rows='15')
 
-    // build:js(./) js/figtree.js
+    // build:js(./) js/marsoon.js
     script(src='https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.0.2/js-yaml.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/mermaid/0.3.0/mermaid.full.min.js')
     // endbuild
 
-    // build:js js/figtree-app.js
+    // build:js js/marsoon-app.js
     script.
       var doc = jsyaml.load(document.getElementById('fig').value);
       document.getElementById('yml-json').value = JSON.stringify(doc, null, 2);
