@@ -1,9 +1,9 @@
 
 # figtree
 
-Export fig.yml to Diagram Graph.
+Export `fig.yml` to Diagram Graph.
 
-**This feature will be merged into [Dockerboard][]**
+**This feature will be merged into [Dockerboard][]**.
 
 ### Quick Start
 
