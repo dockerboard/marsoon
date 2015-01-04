@@ -1,7 +1,7 @@
 
-# figtree
+# marsoon
 
-Export `fig.yml` to Diagram Graph.
+Export `fig.yml` to Diagram Graph. No just only `fig.yml`.
 
 **This feature will be merged into [Dockerboard][]**.
 
