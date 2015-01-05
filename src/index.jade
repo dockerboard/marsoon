@@ -50,7 +50,7 @@ html(lang="en" class="no-js")
       .row
         .col-xs-12
           h1 marsoon - Export fig.yml to Diagram Graph. No just only fig.yml.
-          h3.note NOTE! Currently can not edit.
+          h3.note Now, You can edit fig.yml.
       .row
         .col-xs-6
           h2 fig.yml
@@ -67,7 +67,7 @@ html(lang="en" class="no-js")
             |  ports:
             |    - "3000:3000"
             |  links:
-            |  - db
+            |    - db
 
         .col-xs-6
           h2 json
@@ -83,35 +83,82 @@ html(lang="en" class="no-js")
           textarea#mermaid.form-control(rows='15')
 
     // build:js(./) js/marsoon.js
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.0.2/js-yaml.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/mermaid/0.3.0/mermaid.full.min.js')
     // endbuild
 
     // build:js js/marsoon-app.js
     script.
-      var doc = jsyaml.load(document.getElementById('fig').value);
-      document.getElementById('yml-json').value = JSON.stringify(doc, null, 2);
 
-      var mermaidContent = 'graph LR;\n';
+      updateYML();
+      $(document).on('input propertychange', '#fig', function () {
+        updateYML();
+      });
 
-      var allLinks = [];
-      for (var k in doc) {
-        mermaidContent += '  ' + k + '[' + k + '];\n';
-        mermaidContent += '  ' + 'style ' + k + ' fill:#484F40;\n';
-        var links = doc[k].links;
-        if (links && links.length) {
-          for (var i = 0, l = links.length; i < l; i++) {
-            var alias = links[i].split(':');
-            allLinks.push([k, alias[0]]);
+      function updateYML() {
+        try {
+          var doc = jsyaml.load($('#fig').val());
+          $('#yml-json').val(JSON.stringify(doc, null, 2));
+          updateMermaid(doc);
+        } catch(e) {}
+      };
+
+      function updateMermaid(doc) {
+        var mermaidContent = 'graph LR;\n';
+        var allLinks = [];
+        var allPorts = [];
+        mermaidContent += '  Client[Client];\n';
+        mermaidContent += '  ' + 'style Client fill:blue;\n';
+        for (var k in doc) {
+          mermaidContent += '  ' + k + '[' + k + '];\n';
+          mermaidContent += '  ' + 'style ' + k + ' fill:#484F40;\n';
+          var links = doc[k].links;
+          if (links && links.length) {
+            for (var i = 0, l = links.length; i < l; i++) {
+              var alias = links[i].split(':');
+              allLinks.push([k, alias[0]]);
+            }
+          }
+          var ports = doc[k].ports;
+          if (ports && ports.length) {
+            for (var i = 0, l = ports.length; i < l; i++) {
+              var ps = ports[i].split(':');
+              allPorts.push([k, ps[0], ps[1]]);
+            }
           }
         }
+
+        var index = -1;
+        for (var i = 0, l = allPorts.length; i < l; ++i) {
+          var arr = allPorts[i];
+          if (arr[2]) {
+            mermaidContent += '  Client' + '-->|' + arr[1] + ':' + arr[2] + '| ' + arr[0] + ';\n';
+          } else {
+            for (var j = 0, k = allLinks.length; j < k; ++j) {
+              if (allLinks[j][0] === arr[0] || allLinks[j][1] === arr[0]) {
+
+                if (allLinks[j][0] === arr[0]) {
+                  mermaidContent += '  ' + allLinks[j][1] + '-->|' + arr[1] + '| ' + arr[0] + ';\n';
+                } else {
+                  mermaidContent += '  ' + allLinks[j][0] + '-->|' + arr[1] + '| ' + arr[0] + ';\n';
+                }
+                index = j;
+              }
+            }
+          }
+        }
+        if (index >= 0) {
+          allLinks.splice(index, 1);
+        }
+        for (var i = 0, l = allLinks.length; i < l; ++i) {
+          mermaidContent += '  ' + allLinks[i][0] + '-->' + allLinks[i][1] + ';\n';
+        }
+        $('#mermaid').val(mermaidContent);
+        var newGraphDefinition = $('<div class="mermaid">').text(mermaidContent);
+        $('#diagram').empty().append(newGraphDefinition);
+        mermaid.init();
       }
 
-      for (var i = 0, l = allLinks.length; i < l; ++i) {
-        mermaidContent += '  ' + allLinks[i][0] + '-->' + allLinks[i][1] + ';\n';
-      }
-      document.getElementById('mermaid').value = mermaidContent;
-      document.querySelector('.mermaid').innerHTML = mermaidContent;
-      mermaid.init();
     // endbuild
 
