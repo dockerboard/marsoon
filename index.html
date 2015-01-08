@@ -22,7 +22,12 @@ textarea {
   background-color: #f7f7f9;
   border: 1px solid #e1e1e8;
   border-radius: 4px;
-}</style><!-- endbuild--></head><body><div class="container"><div class="row"><div class="col-xs-12"><h1>marsoon - Export fig.yml to Diagram Graph.</h1><h2>No just only fig.yml.</h2><h3 class="note">Now, You can edit fig.yml.</h3><a href="https://github.com/dockerboard/marsoon">https://github.com/dockerboard/marsoon</a></div></div><div class="row"><div class="col-xs-6"><h2>fig.yml</h2><textarea id="fig" rows="15" class="form-control">db:
+}
+
+.volume .label {
+  color: inherit;
+}
+</style><!-- endbuild--></head><body><div class="container"><div class="row"><div class="col-xs-12"><h1>marsoon - Export fig.yml to Diagram Graph.</h1><h2>No just only fig.yml.</h2><h3 class="note">Now, You can edit fig.yml.</h3><a href="https://github.com/dockerboard/marsoon">https://github.com/dockerboard/marsoon</a></div></div><div class="row"><div class="col-xs-6"><h2>fig.yml</h2><textarea id="fig" rows="15" class="form-control">db:
  image: postgres
  ports:
    - "5432"
@@ -51,8 +56,11 @@ function updateMermaid(doc) {
   var mermaidContent = 'graph LR;\n';
   var allLinks = [];
   var allPorts = [];
-  mermaidContent += '  Client[Client];\n';
-  mermaidContent += '  ' + 'style Client fill:blue;\n';
+  var allVolumes = [];
+  var allVolumesFrom = [];
+  mermaidContent += '  classDef volume fill:yellow,color:#233;\n';
+  mermaidContent += '  Host[Host];\n';
+  mermaidContent += '  ' + 'style Host fill:green;\n';
   for (var k in doc) {
     mermaidContent += '  ' + k + '[' + k + '];\n';
     mermaidContent += '  ' + 'style ' + k + ' fill:#484F40;\n';
@@ -70,13 +78,27 @@ function updateMermaid(doc) {
         allPorts.push([k, ps[0], ps[1]]);
       }
     }
+    var volumes = doc[k].volumes;
+    if (volumes && volumes.length) {
+      for (var i = 0, l = volumes.length; i < l; i++) {
+        var vs = volumes[i].split(':');
+        allVolumes.push([k, vs[0], vs[1]]);
+      }
+    }
+    var volumesFrom = doc[k].volumes_from;
+    if (volumesFrom && volumesFrom.length) {
+      for (var i = 0, l = volumesFrom.length; i < l; i++) {
+        var vs = volumesFrom[i];
+        allVolumesFrom.push([k, vs]);
+      }
+    }
   }
 
   var index = -1;
   for (var i = 0, l = allPorts.length; i < l; ++i) {
     var arr = allPorts[i];
     if (arr[2]) {
-      mermaidContent += '  Client' + '-->|' + arr[1] + ':' + arr[2] + '| ' + arr[0] + ';\n';
+      mermaidContent += '  Host' + '-->|' + arr[1] + ':' + arr[2] + '| ' + arr[0] + ';\n';
     } else {
       for (var j = 0, k = allLinks.length; j < k; ++j) {
         if (allLinks[j][0] === arr[0] || allLinks[j][1] === arr[0]) {
@@ -97,6 +119,39 @@ function updateMermaid(doc) {
   for (var i = 0, l = allLinks.length; i < l; ++i) {
     mermaidContent += '  ' + allLinks[i][0] + '-->' + allLinks[i][1] + ';\n';
   }
+
+  var name;
+  for (var i = 0, l = allVolumes.length; i < l; ++i) {
+    if (name === allVolumes[i][0]) {
+      if (allVolumes[i][2]) {
+        mermaidContent += '  ' + name + '-->|Volume|' + (name+'_'+allVolumes[i][2]) + '{' + allVolumes[i][2] + '};\n';
+        mermaidContent += '  Host' + '-->|Volume|Host_' + allVolumes[i][1] + '{' + allVolumes[i][1] + '};\n';
+        mermaidContent += '  Host_' + allVolumes[i][1] + '-->|Volume|' + name + '_' + allVolumes[i][2] + ';\n';
+        mermaidContent += '  ' + 'class ' + (name+'_'+allVolumes[i][2]) + ' volume;\n';
+      } else {
+        mermaidContent += '  ' + name + '-->|Volume|' + (name+'_'+allVolumes[i][1]) + '{' + allVolumes[i][1] + '};\n';
+        mermaidContent += '  ' + 'class ' + (name+'_'+allVolumes[i][1]) + ' volume;\n';
+      }
+        mermaidContent += '  ' + 'class Host_' + (allVolumes[i][1]) + ' volume;\n';
+    } else if (!name) {
+      name = allVolumes[i][0];
+      if (allVolumes[i][2]) {
+        mermaidContent += '  ' + name + '-->|Volume|' + (name+'_'+allVolumes[i][2]) + '{' + allVolumes[i][2] + '};\n';
+        mermaidContent += '  Host' + '-->|Volume|Host_' + allVolumes[i][1] + '{' + allVolumes[i][1] + '};\n';
+        mermaidContent += '  Host_' + allVolumes[i][1] + '-->|Volume|' + name + '_' + allVolumes[i][2] + ';\n';
+        mermaidContent += '  ' + 'class ' + (name+'_'+allVolumes[i][2]) + ' volume;\n';
+        mermaidContent += '  ' + 'class Host_' + (allVolumes[i][1]) + ' volume;\n';
+      } else {
+        mermaidContent += '  ' + name + '-->|Volume|' + (name+'_'+allVolumes[i][1]) + '{' + allVolumes[i][1] + '};\n';
+        mermaidContent += '  ' + 'class ' + (name+'_'+allVolumes[i][1]) + ' volume;\n';
+      }
+    }
+  }
+
+  for (var i = 0, l = allVolumesFrom.length; i < l; i++) {
+    mermaidContent += '  ' + allVolumesFrom[i][0] + '-->|Volume From'+'|' + allVolumesFrom[i][1] + ';\n';
+  }
+
   $('#mermaid').val(mermaidContent);
   var newGraphDefinition = $('<div class="mermaid">').text(mermaidContent);
   $('#diagram').empty().append(newGraphDefinition);
